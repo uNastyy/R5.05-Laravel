@@ -3,11 +3,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Evaluation;
 use App\Models\EvaluationEleve;
+use App\Models\Module;
 use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
 {
-    // Autres méthodes...
+    public function index()
+    {
+        // Liste toutes les évaluations avec pagination
+        $evaluations = Evaluation::with('module')->paginate(10);
+        return view('evaluations.index', compact('evaluations'));
+    }
+
+    public function create()
+    {
+        // Charge les modules pour l'ajout d'une nouvelle évaluation
+        $modules = Module::all();
+        return view('evaluations.create', compact('modules'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validation des données
+        $request->validate([
+            'titre' => 'required|string|max:255',
+            'date' => 'required|date',
+            'coefficient' => 'required|numeric|min:0.1',
+            'module_id' => 'required|exists:modules,id',
+        ]);
+
+        // Création de l'évaluation
+        Evaluation::create($request->all());
+
+        return redirect()->route('evaluations.index')->with('success', 'Évaluation ajoutée avec succès.');
+    }
 
     public function showNotes($id)
     {

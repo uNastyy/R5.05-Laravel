@@ -42,6 +42,20 @@
         button:hover {
             background-color: #0056b3;
         }
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -111,6 +125,7 @@
         </div>
 
         <button type="submit">Mettre à jour</button>
+        <a href="{{ route('eleves.index') }}" class="btn-back">Retour</a>
     </form>
 </div>
 </body>

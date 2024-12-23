@@ -66,11 +66,27 @@
         .btn-delete:hover {
             background-color: darkred;
         }
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .btn-add:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Liste des élèves</h1>
+
+    <a href="{{ route('eleves.create') }}" class="btn-add">Ajouter un élève</a>
 
     @if(session('success'))
         <div class="success" style="color: green; text-align: center;">
@@ -89,6 +105,7 @@
             <th>Suppression</th>
             <th>Modification</th>
             <th>Profil</th>
+            <th>Notes</th>
         </tr>
         </thead>
         <tbody>
@@ -100,7 +117,6 @@
                 <td>{{ $eleve->numero_etudiant }}</td>
                 <td>{{ $eleve->email }}</td>
                 <td>
-                    <!-- Formulaire pour supprimer l'élève -->
                     <form action="{{ route('eleves.destroy', $eleve->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?');">
                         @csrf
                         @method('DELETE')
@@ -108,14 +124,14 @@
                     </form>
                 </td>
                 <td>
-                    <!-- Lien vers la page de modification -->
                     <a href="{{ route('eleves.edit', $eleve->id) }}" class="btn-edit" style="background-color: orange; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;">Modifier</a>
                 </td>
                 <td>
-                    <!-- Lien vers la page de profil de l'élève -->
                     <a href="{{ route('eleves.show', $eleve->id) }}" class="btn-profile" style="background-color: green; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;">Voir Profil</a>
                 </td>
-
+                <td>
+                    <a href="{{ route('eleves.notes', $eleve->id) }}" class="btn-notes" style="background-color: blue; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;">Voir Notes</a>
+                </td>
 
             </tr>
         @endforeach

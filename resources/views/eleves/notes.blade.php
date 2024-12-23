@@ -34,6 +34,20 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        .btn-add-note {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .btn-add-note:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +71,7 @@
         </tbody>
     </table>
 
-    <h2>Moyenne : {{ number_format($moyenne, 2) }}</h2> <!-- Affichage de la moyenne -->
+    <h2>Moyenne : {{ number_format($moyenne, 2) }}</h2>
 
     <a href="{{ route('eleves.index') }}">Retourner à la liste des élèves</a>
 </div>

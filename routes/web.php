@@ -18,3 +18,12 @@ Route::get('evaluations/{id}/notes', [EvaluationController::class, 'showNotes'])
 Route::get('eleves/{id}/notes', [EleveController::class, 'showNotes'])->name('eleves.notes');
 
 Route::get('eleves/sans-moyenne/{evaluationId}', [EleveController::class, 'elevesSansMoyenne'])->name('eleves.sansMoyenne');
+
+Route::resource('evaluations', EvaluationController::class);
+
+Route::resource('modules', ModuleController::class);
+
+Route::get('evaluations/{evaluation}/addNote', [EvaluationEleveController::class, 'addNote'])->name('evaluations.addNote');
+Route::post('evaluations/{evaluation}/store-note', [EvaluationEleveController::class, 'storeNote'])->name('evaluations.store-note');
+
+

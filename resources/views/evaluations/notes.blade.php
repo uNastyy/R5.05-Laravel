@@ -34,11 +34,27 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        .btn-back, .btn-add-note {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-back:hover, .btn-add-note:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Notes de l'Évaluation : {{ $evaluation->titre }}</h1>
+
+    <a href="{{ route('evaluations.addNote', $evaluation->id) }}" class="btn-add-note">Ajouter une note</a>
 
     <table>
         <thead>
@@ -57,7 +73,7 @@
         </tbody>
     </table>
 
-    <a href="{{ route('evaluations.index') }}">Retourner aux évaluations</a>
+    <a href="{{ route('evaluations.index') }}" class="btn-back">Retourner aux évaluations</a>
 </div>
 </body>
 </html>
