@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('index');
+})->name('home');
 
 use App\Http\Controllers\EleveController;
 use App\Http\Controllers\EvaluationController;
@@ -25,5 +25,3 @@ Route::resource('modules', ModuleController::class);
 
 Route::get('evaluations/{evaluation}/addNote', [EvaluationEleveController::class, 'addNote'])->name('evaluations.addNote');
 Route::post('evaluations/{evaluation}/store-note', [EvaluationEleveController::class, 'storeNote'])->name('evaluations.store-note');
-
-
