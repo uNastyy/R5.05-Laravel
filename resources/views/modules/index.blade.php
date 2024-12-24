@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des élèves</title>
+    <title>Liste des modules</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,30 +55,36 @@
             color: white;
             border: 1px solid #007bff;
         }
+        .btn-add, .btn-edit, .btn-delete, .btn-show {
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .btn-add {
+            background-color: green;
+        }
+        .btn-add:hover {
+            background-color: darkgreen;
+        }
+        .btn-edit {
+            background-color: orange;
+        }
+        .btn-edit:hover {
+            background-color: darkorange;
+        }
         .btn-delete {
             background-color: red;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
         .btn-delete:hover {
             background-color: darkred;
         }
-        .btn-add {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 20px;
+        .btn-show {
+            background-color: blue;
         }
-        .btn-add:hover {
-            background-color: #218838;
+        .btn-show:hover {
+            background-color: darkblue;
         }
         .btn-home{
             background-color: #007bff;
@@ -98,55 +104,38 @@
 </head>
 <body>
 <div class="container">
-    <h1>Liste des élèves</h1>
+    <h1>Liste des modules</h1>
 
-    <a href="{{ route('eleves.create') }}" class="btn-add">Ajouter un élève</a>
+    <a href="{{ route('modules.create') }}" class="btn-add">Ajouter un nouveau module</a>
 
     @if(session('success'))
-        <div class="success" style="color: green; text-align: center;">
-            {{ session('success') }}
-        </div>
+        <div style="color: green; text-align: center;">{{ session('success') }}</div>
     @endif
 
     <table>
         <thead>
         <tr>
+            <th>Code</th>
             <th>Nom</th>
-            <th>Prénom</th>
-            <th>Date de Naissance</th>
-            <th>Numéro étudiant</th>
-            <th>Email</th>
-            <th>Suppression</th>
-            <th>Modification</th>
-            <th>Profil</th>
-            <th>Notes</th>
+            <th>Coefficient</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($eleves as $eleve)
+        @foreach($modules as $module)
             <tr>
-                <td>{{ $eleve->nom }}</td>
-                <td>{{ $eleve->prenom }}</td>
-                <td>{{ $eleve->date_naissance }}</td>
-                <td>{{ $eleve->numero_etudiant }}</td>
-                <td>{{ $eleve->email }}</td>
+                <td>{{ $module->code }}</td>
+                <td>{{ $module->nom }}</td>
+                <td>{{ $module->coefficient }}</td>
                 <td>
-                    <form action="{{ route('eleves.destroy', $eleve->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?');">
+                    <a href="{{ route('modules.show', $module->id) }}" class="btn-show">Voir</a>
+                    <a href="{{ route('modules.edit', $module->id) }}" class="btn-edit">Modifier</a>
+                    <form action="{{ route('modules.destroy', $module->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn-delete">Supprimer</button>
+                        <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce module ?')">Supprimer</button>
                     </form>
                 </td>
-                <td>
-                    <a href="{{ route('eleves.edit', $eleve->id) }}" class="btn-edit" style="background-color: orange; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;">Modifier</a>
-                </td>
-                <td>
-                    <a href="{{ route('eleves.show', $eleve->id) }}" class="btn-profile" style="background-color: green; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;">Voir Profil</a>
-                </td>
-                <td>
-                    <a href="{{ route('eleves.notes', $eleve->id) }}" class="btn-notes" style="background-color: blue; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px;">Voir Notes</a>
-                </td>
-
             </tr>
         @endforeach
         </tbody>
@@ -154,9 +143,8 @@
 
     <a href="{{ route('home') }}" class="btn-home">Retour à l'accueil</a>
 
-    <!-- Pagination -->
     <div class="pagination">
-        {{ $eleves->links() }}
+        {{ $modules->links() }}
     </div>
 </div>
 </body>

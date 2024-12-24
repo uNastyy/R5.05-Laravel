@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes de l'Élève : {{ $eleve->nom }} {{ $eleve->prenom }}</title>
+    <title>Élèves sans moyenne pour {{ $evaluation->titre }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,45 +34,46 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .btn-back {
-            display: inline-block;
-            padding: 10px 15px;
-            text-decoration: none;
+        .btn-home {
             background-color: #007bff;
             color: white;
+            padding: 10px 20px;
+            border: none;
             border-radius: 5px;
-            margin-top: 20px;
             cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
         }
-        .btn-back:hover {
+        .btn-home:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Notes de l'Élève : {{ $eleve->nom }} {{ $eleve->prenom }}</h1>
+    <h1>Élèves sans moyenne pour {{ $evaluation->titre }}</h1>
 
     <table>
         <thead>
         <tr>
-            <th>Évaluation</th>
+            <th>Nom</th>
+            <th>Prénom</th>
             <th>Note</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($eleve->evaluationEleves as $evaluationEleve)
+        @foreach($elevesSansMoyenne as $eleve)
             <tr>
-                <td>{{ $evaluationEleve->evaluation->titre }}</td>
-                <td>{{ $evaluationEleve->note }}</td>
+                <td>{{ $eleve->nom }}</td>
+                <td>{{ $eleve->prenom }}</td>
+                <td>{{ $eleve->pivot->note }}</td>
             </tr>
         @endforeach
         </tbody>
     </table>
 
-    <h2>Moyenne : {{ number_format($moyenne, 2) }}</h2>
-
-    <a href="{{ route('eleves.index') }}" class="btn-back">Retourner à la liste des élèves</a>
+    <a href="{{ route('home') }}" class="btn-home">Retour à l'accueil</a>
 </div>
 </body>
 </html>

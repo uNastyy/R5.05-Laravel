@@ -45,4 +45,12 @@ class EvaluationController extends Controller
 
         return view('evaluations.notes', compact('evaluation'));
     }
+
+    public function elevesSansMoyenne($evaluationId)
+    {
+        $evaluation = Evaluation::findOrFail($evaluationId);
+        $elevesSansMoyenne = $evaluation->eleves()->wherePivot('note', '<', 10)->get();
+
+        return view('evaluations.eleves-sans-moyenne', compact('elevesSansMoyenne', 'evaluation'));
+    }
 }

@@ -66,14 +66,28 @@
         .btn-add:hover {
             background-color: darkgreen;
         }
-        .btn-notes {
+        .btn-notes, btn-no-average {
             background-color: #007bff;
             color: white;
             padding: 5px 10px;
             text-decoration: none;
             border-radius: 5px;
         }
-        .btn-notes:hover {
+        .btn-notes:hover, btn-no-average:hover {
+            background-color: #0056b3;
+        }
+        .btn-home{
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-home:hover {
             background-color: #0056b3;
         }
     </style>
@@ -96,6 +110,7 @@
             <th>Coefficient</th>
             <th>Module</th>
             <th>Notes pour cette évalation</th>
+            <th>Élèves sans moyenne</th>
         </tr>
         </thead>
         <tbody>
@@ -108,10 +123,15 @@
                 <td>
                     <a href="{{ route('evaluations.notes', $evaluation->id) }}" class="btn-notes">Voir les notes</a>
                 </td>
+                <td>
+                    <a href="{{ route('evaluations.elevesSansMoyenne', $evaluation->id) }}" class="btn-no-average">Voir les élèves sans moyenne</a>
+                </td>
             </tr>
         @endforeach
         </tbody>
     </table>
+
+    <a href="{{ route('home') }}" class="btn-home">Retour à l'accueil</a>
 
     <div class="pagination">
         {{ $evaluations->links() }}

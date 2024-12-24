@@ -20,4 +20,9 @@ class Evaluation extends Model
     {
         return $this->hasMany(EvaluationEleve::class);
     }
+
+    public function eleves()
+    {
+        return $this->belongsToMany(Eleve::class)->withPivot('note');
+    }
 }

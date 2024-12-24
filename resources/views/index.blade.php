@@ -48,6 +48,7 @@
     <div class="nav-links">
         <a href="{{ route('eleves.index') }}">Liste des élèves</a>
         <a href="{{ route('evaluations.index') }}">Liste des évaluations</a>
+        <a href="{{ route('modules.index') }}">Liste des modules</a>
     </div>
 </div>
 </body>

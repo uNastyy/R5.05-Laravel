@@ -17,7 +17,7 @@ Route::get('evaluations/{id}/notes', [EvaluationController::class, 'showNotes'])
 
 Route::get('eleves/{id}/notes', [EleveController::class, 'showNotes'])->name('eleves.notes');
 
-Route::get('eleves/sans-moyenne/{evaluationId}', [EleveController::class, 'elevesSansMoyenne'])->name('eleves.sansMoyenne');
+Route::get('evaluations/{evaluation}/eleves-sans-moyenne', [EvaluationController::class, 'elevesSansMoyenne'])->name('evaluations.elevesSansMoyenne');
 
 Route::resource('evaluations', EvaluationController::class);
 

@@ -42,6 +42,19 @@
         button:hover {
             background-color: #0056b3;
         }
+        .btn-back {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -90,7 +103,6 @@
         <button type="submit">Ajouter</button>
     </form>
 
-    <a href="{{ route('evaluations.notes', $evaluation->id) }}">Retourner aux notes</a>
-</div>
+    <a href="{{ route('home') }}" class="btn-back">Retour</a></div>
 </body>
 </html>
