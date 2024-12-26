@@ -79,7 +79,7 @@
 
         <div class="form-group">
             <label for="evaluation_id">Évaluation</label>
-            <select name="evaluation_id" id="evaluation_id" required>
+            <select name="evaluation_id" id="evaluation_id" required disabled>
                 <option value="">Sélectionnez une évaluation</option>
                 @foreach($evaluations as $eval)
                     <option value="{{ $eval->id }}" {{ (isset($evaluation) && $evaluation->id == $eval->id) ? 'selected' : '' }}>
@@ -103,6 +103,6 @@
         <button type="submit">Ajouter</button>
     </form>
 
-    <a href="{{ route('home') }}" class="btn-back">Retour</a></div>
+    <a href="{{ route('evaluations.notes', $evaluation->id) }}" class="btn-back">Retour</a></div>
 </body>
 </html>

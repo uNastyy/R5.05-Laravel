@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Élèves sans moyenne pour {{ $evaluation->titre }}</title>
+    <title>Élèves sans moyenne</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,25 +34,24 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .btn-home {
+        .btn-back {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
             background-color: #007bff;
             color: white;
-            padding: 10px 20px;
-            border: none;
             border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
             margin-top: 20px;
+            cursor: pointer;
         }
-        .btn-home:hover {
+        .btn-back:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Élèves sans moyenne pour {{ $evaluation->titre }}</h1>
+    <h1>Élèves sans moyenne pour l'évaluation : {{ $evaluation->titre }}</h1>
 
     <table>
         <thead>
@@ -63,7 +62,8 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($elevesSansMoyenne as $eleve)
+
+       @foreach($elevesSansMoyenne as $eleve)
             <tr>
                 <td>{{ $eleve->nom }}</td>
                 <td>{{ $eleve->prenom }}</td>
@@ -73,7 +73,7 @@
         </tbody>
     </table>
 
-    <a href="{{ route('home') }}" class="btn-home">Retour à l'accueil</a>
+    <a href="{{ route('evaluations.index') }}" class="btn-back">Retour</a></div>
 </div>
 </body>
 </html>

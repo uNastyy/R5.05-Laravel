@@ -23,6 +23,6 @@ class Evaluation extends Model
 
     public function eleves()
     {
-        return $this->belongsToMany(Eleve::class)->withPivot('note');
+        return $this->belongsToMany(Eleve::class, 'evaluation_eleves')->withPivot('note');
     }
 }

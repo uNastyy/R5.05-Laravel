@@ -127,4 +127,12 @@ class EvaluationEleveController extends Controller
 
         return redirect()->route('evaluations.notes', ['id' => $evaluation->id])->with('success', 'Note added successfully.');
     }
+
+    public function elevesSansMoyenne($id)
+    {
+        $evaluation = Evaluation::findOrFail($id);
+        $elevesSansMoyenne = $evaluation->eleves()->wherePivot('note', '<', 10)->get();
+
+        return view('evaluations.eleves-sans-moyenne', compact('evaluation', 'elevesSansMoyenne'));
+    }
 }

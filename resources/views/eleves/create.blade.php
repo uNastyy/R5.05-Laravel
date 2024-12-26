@@ -94,37 +94,37 @@
         @csrf
 
         <label for="nom">Nom :</label>
-        <input type="text" name="nom" value="{{ old('nom') }}">
+        <input type="text" name="nom" value="{{ old('nom') }}" required>
         @error('nom')
         <div class="error">{{ $message }}</div>
         @enderror
 
         <label for="prenom">Prénom :</label>
-        <input type="text" name="prenom" value="{{ old('prenom') }}">
+        <input type="text" name="prenom" value="{{ old('prenom') }}" required>
         @error('prenom')
         <div class="error">{{ $message }}</div>
         @enderror
 
         <label for="date_naissance">Date de naissance :</label>
-        <input type="date" name="date_naissance" value="{{ old('date_naissance') }}">
+        <input type="date" name="date_naissance" value="{{ old('date_naissance') }}" required>
         @error('date_naissance')
         <div class="error">{{ $message }}</div>
         @enderror
 
         <label for="numero_etudiant">Numéro étudiant :</label>
-        <input type="text" name="numero_etudiant" value="{{ old('numero_etudiant') }}">
+        <input type="text" name="numero_etudiant" value="{{ old('numero_etudiant') }}" required>
         @error('numero_etudiant')
         <div class="error">{{ $message }}</div>
         @enderror
 
         <label for="email">Email :</label>
-        <input type="email" name="email" value="{{ old('email') }}">
+        <input type="email" name="email" value="{{ old('email') }}" required>
         @error('email')
         <div class="error">{{ $message }}</div>
         @enderror
 
         <label for="image">Image (lien) :</label>
-        <input type="text" name="image" value="{{ old('image') }}">
+        <input type="text" name="image" value="{{ old('image') }}" required>
         @error('image')
         <div class="error">{{ $message }}</div>
         @enderror
