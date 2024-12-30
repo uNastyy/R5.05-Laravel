@@ -5,44 +5,40 @@ use App\Models\Evaluation;
 use App\Models\EvaluationEleve;
 use App\Models\Module;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EvaluationController extends Controller
 {
     public function index()
     {
-        // Liste toutes les évaluations avec pagination
+        if (Auth::user()->role !== 'prof') {
+            abort(403, 'Vous n’avez pas l’autorisation d’accéder à cette page.');
+        }
         $evaluations = Evaluation::with('module')->paginate(10);
         return view('evaluations.index', compact('evaluations'));
     }
 
     public function create()
     {
-        // Charge les modules pour l'ajout d'une nouvelle évaluation
         $modules = Module::all();
         return view('evaluations.create', compact('modules'));
     }
 
     public function store(Request $request)
     {
-        // Validation des données
         $request->validate([
             'titre' => 'required|string|max:255',
             'date' => 'required|date',
             'coefficient' => 'required|numeric|min:0.1',
             'module_id' => 'required|exists:modules,id',
         ]);
-
-        // Création de l'évaluation
         Evaluation::create($request->all());
-
         return redirect()->route('evaluations.index')->with('success', 'Évaluation ajoutée avec succès.');
     }
 
     public function showNotes($id)
     {
-        // Récupérer l'évaluation et ses notes
         $evaluation = Evaluation::with('evaluationEleves.eleve')->findOrFail($id);
-
         return view('evaluations.notes', compact('evaluation'));
     }
 }

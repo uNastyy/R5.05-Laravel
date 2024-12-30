@@ -4,17 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Eleve;
+use Illuminate\Support\Facades\Auth;
 
 class EleveController extends Controller
 {
     public function index()
     {
-        $eleves = Eleve::paginate(10); // Pagination des élèves
+        $eleves = Eleve::paginate(10);
         return view('eleves.index', compact('eleves'));
     }
 
     public function create()
     {
+        if (Auth::user()->role !== 'prof') {
+            abort(403, 'Vous n’avez pas l’autorisation d’accéder à cette page.');
+        }
         return view('eleves.create');
     }
 
@@ -41,6 +45,9 @@ class EleveController extends Controller
 
     public function edit($id)
     {
+        if (Auth::user()->role !== 'prof') {
+            abort(403, 'Vous n’avez pas l’autorisation d’accéder à cette page.');
+        }
         $eleve = Eleve::findOrFail($id);
         return view('eleves.edit', compact('eleve'));
     }
@@ -55,7 +62,6 @@ class EleveController extends Controller
             'email' => 'required|string|email|max:255|unique:eleves,email,' . $id,
             'image' => 'nullable|url|max:1024',
         ]);
-
         $eleve = Eleve::findOrFail($id);
         $eleve->update($validatedData);
         return redirect()->route('eleves.index')->with('success', 'Élève mis à jour avec succès.');
@@ -63,6 +69,9 @@ class EleveController extends Controller
 
     public function destroy($id)
     {
+        if (Auth::user()->role !== 'prof') {
+            abort(403, 'Vous n’avez pas l’autorisation d’accéder à cette page.');
+        }
         $eleve = Eleve::findOrFail($id);
         $eleve->delete();
         return redirect()->route('eleves.index')->with('success', 'Élève supprimé avec succès.');
@@ -70,20 +79,8 @@ class EleveController extends Controller
 
     public function showNotes($id)
     {
-        $eleve = Eleve::with('evaluationEleves.evaluation')->findOrFail($id); // Récupérer l'élève avec ses notes
-        $moyenne = $eleve->moyenne(); // Calculer la moyenne
-
+        $eleve = Eleve::with('evaluationEleves.evaluation')->findOrFail($id);
+        $moyenne = $eleve->moyenne();
         return view('eleves.notes', compact('eleve', 'moyenne'));
-    }
-
-    public function elevesSansMoyenne($evaluationId)
-    {
-        // Récupérer tous les élèves qui n'ont pas eu la moyenne pour une évaluation spécifique
-        $eleves = Eleve::whereHas('evaluationEleves', function ($query) use ($evaluationId) {
-            $query->where('evaluation_id', $evaluationId)
-                ->where('note', '<', 10); // Supposons que la moyenne est 10
-        })->get();
-
-        return view('eleves.sans_moyenne', compact('eleves', 'evaluationId'));
     }
 }

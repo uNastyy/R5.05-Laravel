@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NouvelleNoteNotification;
 use App\Models\Eleve;
 use App\Models\Evaluation;
 use App\Models\EvaluationEleve;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class EvaluationEleveController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $evaluationEleves = EvaluationEleve::with('eleve', 'evaluation')->get();
         return view('evaluationEleves.index', compact('evaluationEleves'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $eleves = Eleve::all();
@@ -28,38 +25,28 @@ class EvaluationEleveController extends Controller
         return view('evaluationEleves.store', compact('eleves', 'evaluations'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'eleve_id' => 'required|exists:eleves,id',
+        $validated = $request->validate([
             'evaluation_id' => 'required|exists:evaluations,id',
+            'eleve_id' => 'required|exists:eleves,id',
             'note' => 'required|numeric|min:0|max:20',
         ]);
 
-        $evaluationEleve = new EvaluationEleve();
-        $evaluationEleve->eleve_id = $request->eleve_id;
-        $evaluationEleve->evaluation_id = $request->evaluation_id;
-        $evaluationEleve->note = $request->note;
-        $evaluationEleve->save();
+        $note = EvaluationEleve::create($validated);
 
-        return redirect()->route('evaluationEleves.index')->with('success', 'Note ajoutée avec succès.');
+        $eleve = $note->eleve;
+        Mail::to($eleve->email)->send(new NouvelleNoteNotification($eleve, $note));
+
+        return redirect()->back()->with('success', 'Note ajoutée.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $evaluationEleve = EvaluationEleve::with('eleve', 'evaluation')->findOrFail($id);
         return view('evaluationEleves.show', compact('evaluationEleve'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $evaluationEleve = EvaluationEleve::findOrFail($id);
@@ -68,9 +55,6 @@ class EvaluationEleveController extends Controller
         return view('evaluationEleves.edit', compact('evaluationEleve', 'eleves', 'evaluations'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -88,9 +72,6 @@ class EvaluationEleveController extends Controller
         return redirect()->route('evaluationEleves.index')->with('success', 'Note mise à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $evaluationEleve = EvaluationEleve::findOrFail($id);
@@ -99,19 +80,16 @@ class EvaluationEleveController extends Controller
         return redirect()->route('evaluationEleves.index')->with('success', 'Note supprimée avec succès.');
     }
 
-    /**
-     * Show the form for adding a note to an evaluation.
-     */
     public function addNote(Evaluation $evaluation = null)
     {
+        if (Auth::user()->role !== 'prof') {
+            abort(403, 'Vous n’avez pas l’autorisation d’accéder à cette page.');
+        }
         $eleves = Eleve::all();
         $evaluations = Evaluation::all();
         return view('evaluations.addNote', compact('eleves', 'evaluations', 'evaluation'));
     }
 
-    /**
-     * Store the newly added note in storage.
-     */
     public function storeNote(Request $request, Evaluation $evaluation)
     {
         $request->validate([
@@ -125,7 +103,7 @@ class EvaluationEleveController extends Controller
         $evaluationEleve->note = $request->note;
         $evaluationEleve->save();
 
-        return redirect()->route('evaluations.notes', ['id' => $evaluation->id])->with('success', 'Note added successfully.');
+        return redirect()->route('evaluations.notes', ['id' => $evaluation->id])->with('success', 'Note ajoutée avec succès.');
     }
 
     public function elevesSansMoyenne($id)

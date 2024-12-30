@@ -42,6 +42,19 @@
         button:hover {
             background-color: #0056b3;
         }
+        .btn-back {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -89,6 +102,7 @@
         </div>
 
         <button type="submit">Ajouter</button>
+        <a href="{{ route('evaluations.index') }}" class="btn-back">Retour</a></div>
     </form>
 </div>
 </body>

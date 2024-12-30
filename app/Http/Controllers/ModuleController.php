@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Module;
+use Illuminate\Support\Facades\Auth;
 
 class ModuleController extends Controller
 {
     public function index()
     {
+        if (Auth::user()->role !== 'prof') {
+            abort(403, 'Vous n’avez pas l’autorisation d’accéder à cette page.');
+        }
         $modules = Module::paginate(10);
         return view('modules.index', compact('modules'));
     }
